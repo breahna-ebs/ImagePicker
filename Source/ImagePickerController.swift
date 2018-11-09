@@ -371,14 +371,15 @@ extension ImagePickerController: BottomContainerViewDelegate {
   }
 
   func doneButtonDidPress() {
-    var images: [UIImage]
     if let preferredImageSize = preferredImageSize {
-      images = AssetManager.resolveAssets(stack.assets, size: preferredImageSize)
+        AssetManager.resolveAssets(stack.assets, size: preferredImageSize, completitionHandler: { _images in
+            self.delegate?.doneButtonDidPress(self, images: _images)
+        })
     } else {
-      images = AssetManager.resolveAssets(stack.assets)
+        AssetManager.resolveAssets(stack.assets, completitionHandler: { _images in
+            self.delegate?.doneButtonDidPress(self, images: _images)
+        })
     }
-
-    delegate?.doneButtonDidPress(self, images: images)
   }
 
   func cancelButtonDidPress() {
@@ -386,14 +387,15 @@ extension ImagePickerController: BottomContainerViewDelegate {
   }
 
   func imageStackViewDidPress() {
-    var images: [UIImage]
     if let preferredImageSize = preferredImageSize {
-        images = AssetManager.resolveAssets(stack.assets, size: preferredImageSize)
+        AssetManager.resolveAssets(stack.assets, size: preferredImageSize, completitionHandler: { _images in
+            self.delegate?.wrapperDidPress(self, images: _images)
+        })
     } else {
-        images = AssetManager.resolveAssets(stack.assets)
+        AssetManager.resolveAssets(stack.assets, completitionHandler: { _images in
+            self.delegate?.wrapperDidPress(self, images: _images)
+        })
     }
-
-    delegate?.wrapperDidPress(self, images: images)
   }
 }
 
